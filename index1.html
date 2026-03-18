@@ -1,0 +1,2879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Which AOT Character Are You?</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=IM+Fell+English:ital@0;1&family=Barlow+Condensed:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #0a0908;
+            --bg-elevated: #141210;
+            --red: #8B0000;
+            --red-bright: #a4161a;
+            --gold: #8B6914;
+            --text: #9a9184;
+            --text-bright: #c9c0b3;
+            --border: #2a2520;
+            --border-light: #3d3530;
+            --shadow: #050403;
+        }
+
+        body {
+            font-family: 'Barlow Condensed', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background-image: 
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(20, 18, 16, 0.4) 2px,
+                    rgba(20, 18, 16, 0.4) 4px
+                ),
+                radial-gradient(ellipse at 50% 0%, rgba(139, 0, 0, 0.15) 0%, transparent 60%),
+                radial-gradient(ellipse at 50% 100%, rgba(0, 0, 0, 0.8) 0%, transparent 50%);
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                repeating-linear-gradient(
+                    90deg,
+                    transparent,
+                    transparent 1px,
+                    rgba(0,0,0,0.03) 1px,
+                    rgba(0,0,0,0.03) 2px
+                );
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 720px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .card {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            padding: 0;
+            position: relative;
+            box-shadow: 
+                0 20px 60px var(--shadow),
+                inset 0 1px 0 rgba(255,255,255,0.03);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, 
+                var(--red) 0%, 
+                var(--red-bright) 50%, 
+                var(--red) 100%);
+            box-shadow: 0 0 20px rgba(139, 0, 0, 0.4);
+        }
+
+        .card-content {
+            padding: 40px;
+        }
+
+        h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-bright);
+            margin-bottom: 16px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            position: relative;
+            padding-bottom: 16px;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 2px;
+            background: var(--red);
+        }
+
+        .subtitle {
+            font-family: 'IM Fell English', serif;
+            font-style: italic;
+            color: var(--text);
+            font-size: 1.05rem;
+            margin-bottom: 40px;
+            line-height: 1.5;
+            opacity: 0.8;
+        }
+
+        .btn {
+            font-family: 'Cinzel', serif;
+            background: transparent;
+            color: var(--text-bright);
+            border: 1px solid var(--border-light);
+            padding: 16px 40px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(139, 0, 0, 0.2), 
+                transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn:hover:not(:disabled)::before {
+            left: 100%;
+        }
+
+        .btn:hover:not(:disabled) {
+            border-color: var(--red);
+            color: var(--red-bright);
+            box-shadow: 0 0 20px rgba(139, 0, 0, 0.2);
+        }
+
+        .btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            border-color: var(--border);
+            color: var(--text);
+        }
+
+        .progress-container {
+            margin-bottom: 35px;
+            padding: 0 40px;
+            padding-top: 35px;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .progress-label {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 0.7rem;
+            color: var(--text);
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+        }
+
+        .progress-count {
+            font-family: 'Cinzel', serif;
+            font-size: 0.75rem;
+            color: var(--red-bright);
+            font-weight: 600;
+        }
+
+        .progress-bar {
+            height: 2px;
+            background: var(--border);
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--red);
+            transition: width 0.4s ease;
+            box-shadow: 0 0 10px rgba(139, 0, 0, 0.5);
+        }
+
+        .question-container {
+            padding: 0 40px;
+            margin-bottom: 30px;
+        }
+
+        .question-number {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 0.65rem;
+            color: var(--red);
+            text-transform: uppercase;
+            letter-spacing: 0.25em;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .question {
+            font-family: 'IM Fell English', serif;
+            font-size: 1.25rem;
+            line-height: 1.6;
+            color: var(--text-bright);
+            font-weight: 400;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            border-top: 1px solid var(--border);
+        }
+
+        .option {
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid var(--border);
+            padding: 24px 40px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 0.95rem;
+            color: var(--text);
+            text-align: left;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .option::before {
+            content: '›';
+            font-family: 'Cinzel', serif;
+            color: var(--red);
+            font-size: 1.2rem;
+            opacity: 0;
+            transition: all 0.3s ease;
+            transform: translateX(-10px);
+        }
+
+        .option:hover {
+            background: rgba(139, 0, 0, 0.03);
+            color: var(--text-bright);
+            padding-left: 50px;
+        }
+
+        .option:hover::before {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .option.selected {
+            background: rgba(139, 0, 0, 0.08);
+            color: var(--text-bright);
+            padding-left: 50px;
+            border-left: 3px solid var(--red);
+        }
+
+        .option.selected::before {
+            opacity: 1;
+            transform: translateX(0);
+            color: var(--red-bright);
+        }
+
+        .nav-buttons {
+            padding: 30px 40px 40px;
+            display: flex;
+            justify-content: flex-end;
+            border-top: 1px solid var(--border);
+            margin-top: 0;
+        }
+
+        .result-card {
+            text-align: center;
+            padding: 0;
+        }
+
+        .result-hero {
+            position: relative;
+            width: 100%;
+            height: 450px;
+            overflow: hidden;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .result-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center top;
+            filter: grayscale(30%) contrast(1.2) brightness(0.9);
+        }
+
+        .result-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 200px;
+            background: linear-gradient(to top, var(--bg-elevated) 0%, transparent 100%);
+        }
+
+        .result-content {
+            padding: 40px;
+            margin-top: -80px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .result-name {
+            font-family: 'Cinzel', serif;
+            font-size: 2.4rem;
+            font-weight: 700;
+            color: var(--text-bright);
+            margin-bottom: 8px;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .result-tag {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 0.85rem;
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 0.25em;
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+
+        .result-quote {
+            font-family: 'IM Fell English', serif;
+            font-style: italic;
+            font-size: 1.15rem;
+            color: var(--text);
+            max-width: 500px;
+            margin: 0 auto 35px;
+            line-height: 1.7;
+            position: relative;
+            padding: 20px 30px;
+        }
+
+        .result-quote::before,
+        .result-quote::after {
+            content: '"';
+            position: absolute;
+            font-size: 3rem;
+            color: var(--red);
+            opacity: 0.3;
+            font-family: 'Cinzel', serif;
+            line-height: 1;
+        }
+
+        .result-quote::before {
+            top: -10px;
+            left: 0;
+        }
+
+        .result-quote::after {
+            content: '"';
+            bottom: -20px;
+            right: 0;
+        }
+
+        .traits {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .trait {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 0.7rem;
+            color: var(--text);
+            border: 1px solid var(--border);
+            padding: 8px 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            background: rgba(0,0,0,0.2);
+        }
+
+        .result-desc {
+            font-family: 'IM Fell English', serif;
+            font-size: 1rem;
+            line-height: 1.8;
+            color: var(--text);
+            max-width: 500px;
+            margin: 0 auto 40px;
+            opacity: 0.9;
+        }
+
+        .result-actions {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+            padding-bottom: 20px;
+        }
+
+        .save-card {
+            background: var(--bg);
+            border: 2px solid var(--border);
+            padding: 0;
+            width: 500px;
+            margin: 0 auto;
+        }
+
+        .save-card .result-hero {
+            height: 350px;
+            border-bottom: 2px solid var(--red);
+        }
+
+        .save-card .result-content {
+            padding: 30px;
+            margin-top: -60px;
+        }
+
+        .save-card .result-name {
+            font-size: 1.8rem;
+        }
+
+        .save-card .result-tag {
+            font-size: 0.75rem;
+            margin-bottom: 20px;
+        }
+
+        .save-card .result-quote {
+            font-size: 0.95rem;
+            padding: 15px 20px;
+            margin-bottom: 20px;
+        }
+
+        .save-card .trait {
+            font-size: 0.65rem;
+            padding: 6px 12px;
+        }
+
+        .save-card .branding {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 0.65rem;
+            color: var(--red);
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            font-weight: 600;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 600px) {
+            .card-content {
+                padding: 30px 24px;
+            }
+            
+            .question-container,
+            .progress-container {
+                padding-left: 24px;
+                padding-right: 24px;
+            }
+            
+            .option {
+                padding: 20px 24px;
+            }
+            
+            .option:hover,
+            .option.selected {
+                padding-left: 34px;
+            }
+            
+            .nav-buttons {
+                padding: 24px;
+            }
+            
+            h1 {
+                font-size: 1.4rem;
+            }
+            
+            .result-hero {
+                height: 350px;
+            }
+            
+            .result-name {
+                font-size: 1.8rem;
+            }
+            
+            .result-content {
+                padding: 30px 24px;
+            }
+        }
+
+        /* CRT effect overlay */
+        .crt::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%),
+                linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+            background-size: 100% 3px, 3px 100%;
+            pointer-events: none;
+            z-index: 999;
+            opacity: 0.4;
+        }
+    </style>
+</head>
+<body class="crt">
+    <div class="container">
+        <!-- START SCREEN -->
+        <div id="start-screen" class="card">
+            <div class="card-content">
+                <h1>Which AOT Character Are You?</h1>
+                <p class="subtitle">12 questions. No comfort. Find out who you are when everything falls apart.</p>
+                <button class="btn" onclick="startQuiz()">Start Quiz</button>
+            </div>
+        </div>
+
+        <!-- QUIZ SCREEN -->
+        <div id="quiz-screen" class="card hidden">
+            <div class="progress-container">
+                <div class="progress-header">
+                    <span class="progress-label">Progress</span>
+                    <span class="progress-count" id="progress-text">01 / 12</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+                </div>
+            </div>
+            <div class="question-container">
+                <div class="question-number" id="question-number">Question 01</div>
+                <div class="question" id="question-text"></div>
+            </div>
+            <div class="options" id="options-container"></div>
+            <div class="nav-buttons">
+                <button class="btn" id="next-btn" onclick="nextQuestion()" disabled>Next Question</button>
+            </div>
+        </div>
+
+        <!-- RESULT SCREEN -->
+        <div id="result-screen" class="card hidden">
+            <div id="result-content" class="result-card">
+                <div class="result-hero">
+                    <img class="result-image" id="result-img" src="" alt="">
+                    <div class="result-overlay"></div>
+                </div>
+                <div class="result-content">
+                    <div class="result-name" id="result-name"></div>
+                    <div class="result-tag" id="result-tag"></div>
+                    <div class="result-quote" id="result-quote"></div>
+                    <div class="traits" id="result-traits"></div>
+                    <div class="result-desc" id="result-desc"></div>
+                    <div class="result-actions">
+                        <button class="btn" onclick="saveCard()">Save Result</button>
+                        <button class="btn" onclick="restartQuiz()">Try Again</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- HIDDEN SAVE CARD -->
+        <div id="save-card-template" class="hidden">
+            <div class="save-card" id="save-card-content">
+                <div class="result-hero">
+                    <img class="result-image" id="save-img" src="" alt="">
+                    <div class="result-overlay"></div>
+                </div>
+                <div class="result-content">
+                    <div class="result-name" id="save-name"></div>
+                    <div class="result-tag" id="save-tag"></div>
+                    <div class="result-quote" id="save-quote"></div>
+                    <div class="traits" id="save-traits"></div>
+                    <div class="branding">yeagerx.exe</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+// CHARACTER DATA
+const characters = {
+    eren: {
+        name: "Eren Yeager",
+        tag: "THE REBEL",
+        emoji: "⚔️",
+        photos: [
+            "https://image.zaw-myo.workers.dev/image/97ad6c70-c487-449d-a446-25fc903e580b",
+            "https://image.zaw-myo.workers.dev/image/11f5d785-1688-48a9-8b08-992667b7ec07",
+            "https://image.zaw-myo.workers.dev/image/ed1c7b3f-9278-496b-8756-388a959d0d96",
+            "https://image.zaw-myo.workers.dev/image/2b57b5b4-da3b-41db-a1a6-57fd602eec54"
+        ],
+        quotes: [
+            "I keep moving forward until my enemies are destroyed.",
+            "If you win you live. If you lose you die. If you don't fight you can't win.",
+            "I was born into this world so that I could do this.",
+            "No matter what, I'll keep fighting. Like I always have."
+        ],
+        desc: "You move before you think. The need to keep going, to push through every wall — that's just who you are. People call it reckless. You call it the only option.",
+        traits: ["UNSTOPPABLE", "OBSESSIVE", "VISIONARY", "DANGEROUS"]
+    },
+    
+    mikasa: {
+        name: "Mikasa Ackerman",
+        tag: "THE PROTECTOR",
+        emoji: "🗡️",
+        photos: [
+            "https://image.zaw-myo.workers.dev/image/c180f732-014c-4f68-92e4-a98b21868c65",
+            "https://image.zaw-myo.workers.dev/image/04d5c1fb-71d9-435c-a989-2dfcb1538664",
+            "https://image.zaw-myo.workers.dev/image/42fd0acd-5acc-40c6-880e-2d7406a1e992",
+            "https://image.zaw-myo.workers.dev/image/02a1b934-c1ef-4199-bbde-86f2e31e94c6"
+        ],
+        quotes: [
+            "This world is cruel. It is also very beautiful.",
+            "I'm strong. Stronger than all of you.",
+            "If I can't, then I'll just have to do it until I can.",
+            "As long as I'm with you, I don't care what happens to me."
+        ],
+        desc: "You don't talk much. You don't need to. When it matters you're already there — no hesitation, no complaint. That kind of loyalty is rare.",
+        traits: ["SILENT", "LOYAL", "LETHAL", "SELFLESS"]
+    },
+    
+    levi: {
+        name: "Levi Ackerman",
+        tag: "HUMANITY'S STRONGEST",
+        emoji: "⚡",
+        photos: [
+            "https://image.zaw-myo.workers.dev/image/9dc2dac0-8c5d-48b1-a44a-75f5ef39e770",
+            "https://image.zaw-myo.workers.dev/image/b6c85fd1-a88f-46b0-85cc-3e63d2d6041e",
+            "https://image.zaw-myo.workers.dev/image/41ddff72-dca5-4870-8944-6a8dd4b50796",
+            "https://image.zaw-myo.workers.dev/image/0bb6f4fe-2986-462b-9b41-c3e01456ce52"
+        ],
+        quotes: [
+            "The only thing we're allowed to do is believe that we won't regret the choice we made.",
+            "Clean your room before you run your mouth.",
+            "I don't know which option you should choose. I could never advise you on that.",
+            "Everyone had to kill to survive."
+        ],
+        desc: "You carry more than you show. Cold on the outside because you've learned what happens when you let people see the rest. Still the most reliable person in any room.",
+        traits: ["COLD", "PRECISE", "CARRYING GRIEF", "UNMATCHED"]
+    },
+    
+    armin: {
+        name: "Armin Arlert",
+        tag: "THE STRATEGIST",
+        emoji: "📖",
+        photos: [
+            "https://image.zaw-myo.workers.dev/image/f15ec3b6-82bd-4061-b912-e3e793eb3bb0",
+            "https://image.zaw-myo.workers.dev/image/7f98cc6f-3416-4cb1-967b-40e1ba4a9338",
+            "https://image.zaw-myo.workers.dev/image/6f9f9545-db90-4b4e-9d30-701455a1a1f5",
+            "https://image.zaw-myo.workers.dev/image/4c51cc00-5521-4934-b879-6457124e7565"
+        ],
+        quotes: [
+            "Someone who can't sacrifice anything can never change anything.",
+            "It's not the world that's wrong. Just my understanding of it.",
+            "I want to see it too. The world outside these walls.",
+            "Even if I have no chance of winning I still have to fight."
+        ],
+        desc: "You see things others walk straight past. The one people underestimate right up until the moment you change everything. Quiet doesn't mean weak.",
+        traits: ["BRILLIANT", "UNDERESTIMATED", "EMPATHETIC", "BRAVE"]
+    },
+    
+    hange: {
+        name: "Hange Zoe",
+        tag: "THE VISIONARY",
+        emoji: "🔬",
+        photos: [
+            "https://image.zaw-myo.workers.dev/image/06c5427e-0142-4e75-b1b4-ce6fdfdb050a",
+            "https://image.zaw-myo.workers.dev/image/c88aaeb3-7010-465d-96db-8f7fadf53d8d",
+            "https://image.zaw-myo.workers.dev/image/98dc96b0-9480-4ae7-803d-899f19da8654",
+            "https://image.zaw-myo.workers.dev/image/ecad99ff-fc29-4901-85ce-5d1eb7d7fc14"
+        ],
+        quotes: [
+            "I want to know more. I need to understand.",
+            "There are no dead ends when you're obsessed enough.",
+            "The moment you give up is the moment you let someone else win.",
+            "Knowledge is the only weapon that doesn't run out."
+        ],
+        desc: "Your brain doesn't have an off switch and you stopped trying to find one. You find the thing that terrifies everyone else and run toward it.",
+        traits: ["OBSESSIVE", "FEARLESS", "CHAOTIC", "GENIUS"]
+    },
+    
+    erwin: {
+        name: "Erwin Smith",
+        tag: "THE COMMANDER",
+        emoji: "🗡️",
+        photos: [
+            "https://image.zaw-myo.workers.dev/image/74575235-9ae8-438a-9bc5-c2441d1cf0e9",
+            "https://image.zaw-myo.workers.dev/image/07616ac4-716c-49b8-b484-9fadd0fdd013",
+            "https://image.zaw-myo.workers.dev/image/b2b94c0b-33bc-4871-aa38-14570494dc21",
+            "https://image.zaw-myo.workers.dev/image/4b60922a-e1a0-4581-838f-5a0ca946ec7c"
+        ],
+        quotes: [
+            "Dedicate your hearts.",
+            "If you begin to regret, you'll dull your future decisions and let others make your choices for you.",
+            "We carry the weight of those we've lost. That's what keeps us moving.",
+            "A person who cannot sacrifice everything can never change anything."
+        ],
+        desc: "You think in moves others haven't imagined yet. You make the calls no one else will and live with them after. That's the burden you chose and you carry it clean.",
+        traits: ["COMMANDING", "SACRIFICIAL", "STRATEGIC", "RESOLUTE"]
+    },
+    
+    historia: {
+        name: "Historia Reiss",
+        tag: "THE QUEEN",
+        emoji: "👑",
+        photos: [
+            "https://image.zaw-myo.workers.dev/image/c2ea7437-74de-4094-8043-941c49cf737d",
+            "https://image.zaw-myo.workers.dev/image/01906d3a-4dc7-4bd2-b5b7-a6e4fe2ce29b",
+            "https://image.zaw-myo.workers.dev/image/237cc58e-0360-4b2d-8c68-cfeb725cefed",
+            "https://image.zaw-myo.workers.dev/image/ac88af19-7c0f-45bc-bf0b-2c2a6d3d2ffb"
+        ],
+        quotes: [
+            "I'm going to live for myself from now on.",
+            "Maybe I was wrong about everything.",
+            "I choose to believe in myself.",
+            "For the first time in my life I want to keep living."
+        ],
+        desc: "You spent so long being who everyone needed you to be. The real you is quieter, harder, and more powerful than any version they tried to create.",
+        traits: ["REAL", "QUIET STRENGTH", "CHOSEN", "RESILIENT"]
+    },
+    
+    reiner: {
+        name: "Reiner Braun",
+        tag: "THE BROKEN SOLDIER",
+        emoji: "🛡️",
+        photos: [
+            "https://image.zaw-myo.workers.dev/image/c5df6b03-9481-4449-9984-cac704110e8f",
+            "https://image.zaw-myo.workers.dev/image/261ab8db-0cd0-43c3-923e-2d1af2ab4ad2",
+            "https://image.zaw-myo.workers.dev/image/cae1a086-f3d8-4023-ab2d-70197c51bb84",
+            "https://image.zaw-myo.workers.dev/image/204f3641-3f4e-4fd1-a28d-d572eb312154"
+        ],
+        quotes: [
+            "I'm so tired.",
+            "I don't have the right to die yet.",
+            "I'm a soldier. I have to keep going even when I don't want to.",
+            "Everything I did, I did because I believed it was right."
+        ],
+        desc: "You've been holding yourself together with sheer willpower for so long you forgot what it felt like before. You keep going anyway. That's not weakness.",
+        traits: ["FRACTURED", "DUTY-BOUND", "ENDURING", "CONFLICTED"]
+    },
+    
+    annie: {
+        name: "Annie Leonhart",
+        tag: "THE LONE WOLF",
+        emoji: "❄️",
+        photos: [
+            "https://image.zaw-myo.workers.dev/image/b4206ec3-9ea6-4560-bee3-48b89ba809c4",
+            "https://image.zaw-myo.workers.dev/image/ec44f3ce-62b0-4f0c-bb9e-2d8117191567",
+            "https://image.zaw-myo.workers.dev/image/29291eca-5f5d-45f8-bef7-b080eee832c6",
+            "https://image.zaw-myo.workers.dev/image/40af2b31-353f-4c8b-9dc8-5c1ec3586fd1"
+        ],
+        quotes: [
+            "I have no interest in making friends.",
+            "Tears don't suit a soldier.",
+            "I just want to go home.",
+            "Don't try to understand me. You won't."
+        ],
+        desc: "You keep people at arm's length on purpose. Not because you don't feel things — because you feel them too much and you learned early that's dangerous.",
+        traits: ["DISTANT", "SELF-RELIANT", "GUARDED", "SHARP"]
+    },
+    
+    jean: {
+        name: "Jean Kirstein",
+        tag: "THE REALIST",
+        emoji: "🐴",
+        photos: [
+            "https://image.zaw-myo.workers.dev/image/567258d1-96ca-47dc-8395-7478b6faaef3",
+            "https://image.zaw-myo.workers.dev/image/a7862858-8594-4dbf-9698-ebe3202d8c24",
+            "https://image.zaw-myo.workers.dev/image/567258d1-96ca-47dc-8395-7478b6faaef3",
+            "https://image.zaw-myo.workers.dev/image/a7862858-8594-4dbf-9698-ebe3202d8c24"
+        ],
+        quotes: [
+            "I hate that I care so much.",
+            "Someone has to say the thing no one wants to hear.",
+            "I'm not a hero. I just can't look away.",
+            "Dying for something you believe in is one thing. Dying for nothing is another."
+        ],
+        desc: "You say the uncomfortable truth because someone has to. You act like it doesn't bother you watching people throw themselves away — it does.",
+        traits: ["HONEST", "RELUCTANT HERO", "GROUNDED", "OUTSPOKEN"]
+    }
+};
+
+const charKeys = Object.keys(characters);
+// QUESTION POOL - 200 TOTAL (100 here, 100 in Part 4)
+// Each option maps to exactly one character key
+
+const allQuestions = [
+    // THEME 1: WHAT DRIVES YOU (10 questions)
+    {
+        text: "You wake up in the dark with nothing but the memory of why you started. What pulls you out of bed?",
+        options: [
+            { text: "The need to keep moving until it's done", char: "eren" },
+            { text: "Someone else is depending on you", char: "mikasa" },
+            { text: "The routine. The discipline. The next step.", char: "levi" },
+            { text: "A question you haven't answered yet", char: "armin" }
+        ]
+    },
+    {
+        text: "Someone asks what you want most. Your honest answer?",
+        options: [
+            { text: "To see what's beyond all this", char: "armin" },
+            { text: "To understand the thing that scares me", char: "hange" },
+            { text: "To be free of everything that came before", char: "historia" },
+            { text: "To finish what I started, no matter the cost", char: "erwin" }
+        ]
+    },
+    {
+        text: "You're alone in silence for hours. Where does your mind go?",
+        options: [
+            { text: "Every mistake I haven't fixed yet", char: "levi" },
+            { text: "The people I couldn't save", char: "reiner" },
+            { text: "What I'll do when they finally let me rest", char: "annie" },
+            { text: "The next move. Always the next move.", char: "erwin" }
+        ]
+    },
+    {
+        text: "What makes you angry enough to act?",
+        options: [
+            { text: "Seeing someone give up without a fight", char: "eren" },
+            { text: "People who waste what they have", char: "levi" },
+            { text: "Being told to stop asking questions", char: "hange" },
+            { text: "Watching others die for nothing", char: "jean" }
+        ]
+    },
+    {
+        text: "You have one hour left. What do you spend it on?",
+        options: [
+            { text: "Making sure they remember why", char: "erwin" },
+            { text: "Standing in front of someone I protect", char: "mikasa" },
+            { text: "Finally saying the thing I never said", char: "armin" },
+            { text: "Just... stopping. Finally.", char: "reiner" }
+        ]
+    },
+    {
+        text: "What's the thing you won't admit out loud?",
+        options: [
+            { text: "I'm terrified of being useless", char: "armin" },
+            { text: "I don't know if any of this was worth it", char: "reiner" },
+            { text: "I need them more than they need me", char: "historia" },
+            { text: "Sometimes I want to burn it all down", char: "eren" }
+        ]
+    },
+    {
+        text: "When did you last feel truly alive?",
+        options: [
+            { text: "In the moment before everything changed", char: "historia" },
+            { text: "When I finally understood something new", char: "hange" },
+            { text: "Fighting. Only when I'm fighting.", char: "mikasa" },
+            { text: "The last time I didn't hold back", char: "annie" }
+        ]
+    },
+    {
+        text: "What do you collect that nobody knows about?",
+        options: [
+            { text: "Books. Knowledge. Proof there's more.", char: "armin" },
+            { text: "Nothing. I travel light.", char: "levi" },
+            { text: "The faces of people who looked at me wrong", char: "annie" },
+            { text: "Regrets. I have a long list.", char: "jean" }
+        ]
+    },
+    {
+        text: "The voice in your head sounds like who?",
+        options: [
+            { text: "Someone I lost. I still answer them.", char: "erwin" },
+            { text: "Myself, but younger and more honest", char: "historia" },
+            { text: "Whoever I need to be that day", char: "reiner" },
+            { text: "No one. It's quiet in there.", char: "mikasa" }
+        ]
+    },
+    {
+        text: "What are you actually running toward?",
+        options: [
+            { text: "A future I can choose for myself", char: "historia" },
+            { text: "The end of this. Whatever that means.", char: "eren" },
+            { text: "Answers. I need to know why.", char: "hange" },
+            { text: "Away from who I used to be", char: "jean" }
+        ]
+    },
+
+    // THEME 2: BETRAYAL (10 questions)
+    {
+        text: "Someone you trusted sold you out. What's your first move?",
+        options: [
+            { text: "Confront them directly. Let them see your face.", char: "eren" },
+            { text: "File it away. Wait for the right moment.", char: "levi" },
+            { text: "Understand why first. Then decide.", char: "armin" },
+            { text: "Cut them out like they never existed", char: "annie" }
+        ]
+    },
+    {
+        text: "You discover a friend has been lying to everyone. What do you do with that information?",
+        options: [
+            { text: "Use it when it serves the mission", char: "erwin" },
+            { text: "Keep it to myself. Watch them closer.", char: "mikasa" },
+            { text: "Confront them alone. Give them a chance to explain.", char: "armin" },
+            { text: "Expose them publicly. Lies rot everything.", char: "jean" }
+        ]
+    },
+    {
+        text: "You've been betrayed before. How has it changed you?",
+        options: [
+            { text: "I don't trust anyone until they've earned it twice", char: "levi" },
+            { text: "I expect it now. Doesn't surprise me anymore.", char: "reiner" },
+            { text: "I trust fewer people, but deeper.", char: "mikasa" },
+            { text: "I became someone who could do the same.", char: "annie" }
+        ]
+    },
+    {
+        text: "The betrayal came from family. How do you respond?",
+        options: [
+            { text: "Family doesn't get a pass. The truth matters more.", char: "eren" },
+            { text: "Try to understand the pressure they were under", char: "armin" },
+            { text: "Protect the mission. Family is secondary.", char: "erwin" },
+            { text: "Walk away. I don't need explanations.", char: "annie" }
+        ]
+    },
+    {
+        text: "You have a chance to betray them back. Do you take it?",
+        options: [
+            { text: "Only if it advances what I'm fighting for", char: "erwin" },
+            { text: "No. I'm not becoming what they are.", char: "armin" },
+            { text: "Yes. They chose this, not me.", char: "eren" },
+            { text: "I don't waste energy on revenge.", char: "levi" }
+        ]
+    },
+    {
+        text: "What's worse — being betrayed or being the betrayer?",
+        options: [
+            { text: "Being the betrayer. You have to live with that.", char: "reiner" },
+            { text: "Being betrayed. You never see it coming.", char: "jean" },
+            { text: "Both are just choices. I don't moralize.", char: "levi" },
+            { text: "Neither matters if you achieve your goal", char: "erwin" }
+        ]
+    },
+    {
+        text: "They come back asking for forgiveness. Your response?",
+        options: [
+            { text: "Forgiveness is earned, not requested", char: "mikasa" },
+            { text: "I listen. But I don't forget.", char: "armin" },
+            { text: "Too late. The door is closed.", char: "annie" },
+            { text: "I understand why they did it. Doesn't change anything.", char: "historia" }
+        ]
+    },
+    {
+        text: "You see betrayal coming. Do you warn the others?",
+        options: [
+            { text: "No. I handle it myself.", char: "levi" },
+            { text: "Yes. They deserve to prepare.", char: "mikasa" },
+            { text: "Only if it doesn't compromise my position", char: "annie" },
+            { text: "I use it as leverage. Information is power.", char: "hange" }
+        ]
+    },
+    {
+        text: "The betrayal revealed they never cared. How do you process that?",
+        options: [
+            { text: "I don't. I just keep moving.", char: "eren" },
+            { text: "Add it to the list of things I survived", char: "reiner" },
+            { text: "Question my own judgment for missing it", char: "jean" },
+            { text: "Accept that people are complicated. Move on.", char: "armin" }
+        ]
+    },
+    {
+        text: "Would you betray someone to save many?",
+        options: [
+            { text: "Without hesitation. Math is simple.", char: "erwin" },
+            { text: "I'd try to find another way first", char: "armin" },
+            { text: "I'd hate myself, but yes.", char: "jean" },
+            { text: "I don't know. I've never been sure of anything.", char: "reiner" }
+        ]
+    },
+
+    // THEME 3: BEING ALONE (10 questions)
+    {
+        text: "When did you first realize you were fundamentally alone?",
+        options: [
+            { text: "When the person who knew me best died", char: "levi" },
+            { text: "I've always known. It's not a realization.", char: "annie" },
+            { text: "When I couldn't explain what I was becoming", char: "eren" },
+            { text: "When I finally got what I wanted and felt empty", char: "historia" }
+        ]
+    },
+    {
+        text: "Solitude feels like what to you?",
+        options: [
+            { text: "The only place I can think clearly", char: "armin" },
+            { text: "Heavy. But familiar.", char: "reiner" },
+            { text: "Dangerous. Too much time to remember.", char: "eren" },
+            { text: "Home. I don't mind it.", char: "annie" }
+        ]
+    },
+    {
+        text: "You eat dinner alone. What's playing in your head?",
+        options: [
+            { text: "Tactical review of the day", char: "levi" },
+            { text: "Conversations I should have had", char: "jean" },
+            { text: "The next problem to solve", char: "hange" },
+            { text: "Nothing. I trained myself to stop.", char: "mikasa" }
+        ]
+    },
+    {
+        text: "Someone offers genuine companionship. Your gut reaction?",
+        options: [
+            { text: "Suspicion. What do they want?", char: "levi" },
+            { text: "Gratitude. I don't get offers like this.", char: "armin" },
+            { text: "Fear. I'll only disappoint them.", char: "reiner" },
+            { text: "Indifference. I'm fine as I am.", char: "annie" }
+        ]
+    },
+    {
+        text: "How do you handle the silence when it gets too loud?",
+        options: [
+            { text: "Fill it with work. Always work.", char: "erwin" },
+            { text: "Find someone to protect. Purpose quiets noise.", char: "mikasa" },
+            { text: "Let it hurt. Then keep going.", char: "eren" },
+            { text: "Dive deeper into my research", char: "hange" }
+        ]
+    },
+    {
+        text: "You've been isolated for weeks. What breaks first?",
+        options: [
+            { text: "Nothing. I've done this before.", char: "levi" },
+            { text: "My patience for other people's noise", char: "annie" },
+            { text: "The stories I tell myself about why I'm here", char: "historia" },
+            { text: "Sleep. I start seeing things.", char: "jean" }
+        ]
+    },
+    {
+        text: "What's the hardest part of being alone for you?",
+        options: [
+            { text: "No one to check if I'm still human", char: "armin" },
+            { text: "The memories get louder", char: "reiner" },
+            { text: "I start to believe this is all I deserve", char: "historia" },
+            { text: "Nothing. I'm built for this.", char: "mikasa" }
+        ]
+    },
+    {
+        text: "You see a group laughing together. What do you feel?",
+        options: [
+            { text: "Nothing. I don't need that.", char: "annie" },
+            { text: "A sharp reminder of what I can't have", char: "reiner" },
+            { text: "Responsibility. I protect moments like that.", char: "erwin" },
+            { text: "Warmth. I'm glad it exists for someone.", char: "armin" }
+        ]
+    },
+    {
+        text: "Would you choose to be alone if you had options?",
+        options: [
+            { text: "Yes. It's cleaner this way.", char: "levi" },
+            { text: "No. But I don't know how to be otherwise.", char: "annie" },
+            { text: "Only if the work requires it", char: "erwin" },
+            { text: "I don't think I get to choose anymore.", char: "eren" }
+        ]
+    },
+    {
+        text: "What do you talk about when there's no one to listen?",
+        options: [
+            { text: "I don't. I write it down and burn it.", char: "eren" },
+            { text: "Theories. Ideas. Things that don't exist yet.", char: "hange" },
+            { text: "I practice saying what I really think", char: "jean" },
+            { text: "I stopped talking to myself years ago.", char: "mikasa" }
+        ]
+    },
+
+    // THEME 4: HOW YOU LOVE (10 questions)
+    {
+        text: "You love someone. How does it show?",
+        options: [
+            { text: "I'm there before they know they need me", char: "mikasa" },
+            { text: "I give them the truth, even when it hurts", char: "levi" },
+            { text: "I fight for the world they want to see", char: "armin" },
+            { text: "I keep them at distance to keep them safe", char: "annie" }
+        ]
+    },
+    {
+        text: "They don't love you back. What do you do with that?",
+        options: [
+            { text: "Love them anyway. Quietly.", char: "mikasa" },
+            { text: "Respect their choice. Walk away.", char: "armin" },
+            { text: "Use the pain as fuel", char: "eren" },
+            { text: "I never expected them to. It's fine.", char: "levi" }
+        ]
+    },
+    {
+        text: "Love makes you feel what?",
+        options: [
+            { text: "Terrified. It means something to lose.", char: "annie" },
+            { text: "Soft in ways I can't afford", char: "erwin" },
+            { text: "Like I have to be better than I am", char: "jean" },
+            { text: "Free. For a moment.", char: "historia" }
+        ]
+    },
+    {
+        text: "You have to choose between love and duty. Which wins?",
+        options: [
+            { text: "Duty. Always.", char: "erwin" },
+            { text: "Love. It's the only real thing.", char: "mikasa" },
+            { text: "I find a way to serve both", char: "armin" },
+            { text: "I choose, then hate myself for it.", char: "reiner" }
+        ]
+    },
+    {
+        text: "What's the most loving thing you've done that nobody saw?",
+        options: [
+            { text: "Let someone go because they needed to leave", char: "historia" },
+            { text: "Cleaned up after someone I resented", char: "levi" },
+            { text: "Kept fighting when I wanted to stop", char: "eren" },
+            { text: "Stayed when every instinct said run", char: "jean" }
+        ]
+    },
+    {
+        text: "You lose the person you love most. How do you survive it?",
+        options: [
+            { text: "I don't. I just keep breathing.", char: "levi" },
+            { text: "I become what they needed me to be", char: "erwin" },
+            { text: "I add their weight to my own", char: "mikasa" },
+            { text: "I try to understand why it happened", char: "hange" }
+        ]
+    },
+    {
+        text: "Can you love someone and still hurt them?",
+        options: [
+            { text: "Yes. Sometimes hurting them is the only way to save them.", char: "eren" },
+            { text: "Yes. I do it every day.", char: "reiner" },
+            { text: "No. If I hurt them, I failed.", char: "mikasa" },
+            { text: "Love and pain aren't opposites.", char: "armin" }
+        ]
+    },
+    {
+        text: "They remember you fondly. What did you give them?",
+        options: [
+            { text: "Safety. They knew I wouldn't break.", char: "mikasa" },
+            { text: "Honesty. I never lied about what I was.", char: "levi" },
+            { text: "Hope. I showed them another way.", char: "armin" },
+            { text: "Space to become themselves", char: "historia" }
+        ]
+    },
+    {
+        text: "Your love is described as what by others?",
+        options: [
+            { text: "Intense. Sometimes frightening.", char: "eren" },
+            { text: "Quiet. Easy to miss.", char: "mikasa" },
+            { text: "Complicated. I don't show it well.", char: "jean" },
+            { text: "Practical. I express it through action.", char: "levi" }
+        ]
+    },
+    {
+        text: "Would you die for them, or would you rather live for them?",
+        options: [
+            { text: "Die. It's simpler.", char: "mikasa" },
+            { text: "Live. Dying is the easy choice.", char: "armin" },
+            { text: "Whatever serves the larger goal", char: "erwin" },
+            { text: "I don't know if I'm capable of either.", char: "reiner" }
+        ]
+    },
+
+    // THEME 5: SACRIFICE (10 questions)
+    {
+        text: "What are you willing to give up that nobody asks for?",
+        options: [
+            { text: "My name. My past. Myself.", char: "reiner" },
+            { text: "The chance to be understood", char: "levi" },
+            { text: "My humanity, if that's what it takes", char: "eren" },
+            { text: "The easy path. The comfortable life.", char: "erwin" }
+        ]
+    },
+    {
+        text: "You sacrifice someone innocent to save many. How do you sleep?",
+        options: [
+            { text: "I don't. But I'd do it again.", char: "erwin" },
+            { text: "I tell myself it was necessary until I believe it", char: "armin" },
+            { text: "I carry their face with everything else", char: "levi" },
+            { text: "I break. But the mission continues.", char: "jean" }
+        ]
+    },
+    {
+        text: "What's the one thing you won't sacrifice, no matter the cost?",
+        options: [
+            { text: "The people I've already lost", char: "eren" },
+            { text: "My ability to choose for myself", char: "historia" },
+            { text: "The truth. Even when it hurts.", char: "hange" },
+            { text: "I don't know yet. I'm afraid to find out.", char: "reiner" }
+        ]
+    },
+    {
+        text: "They call your sacrifice noble. How do you feel about that word?",
+        options: [
+            { text: "It's a lie. I had no choice.", char: "reiner" },
+            { text: "It's irrelevant. Results matter.", char: "erwin" },
+            { text: "It helps them sleep. Let them have it.", char: "levi" },
+            { text: "I don't want to be noble. I want to be done.", char: "jean" }
+        ]
+    },
+    {
+        text: "You sacrifice and nobody notices. Is it still worth it?",
+        options: [
+            { text: "Yes. Recognition corrupts purpose.", char: "mikasa" },
+            { text: "No. Sacrifice without witness is just loss.", char: "jean" },
+            { text: "I don't do it for notice. I do it because I must.", char: "erwin" },
+            { text: "I notice. That's enough.", char: "armin" }
+        ]
+    },
+    {
+        text: "What have you sacrificed that you can never get back?",
+        options: [
+            { text: "The version of me that believed in good endings", char: "armin" },
+            { text: "My hands. They're clean now, but stained forever.", char: "levi" },
+            { text: "The right to be ordinary", char: "historia" },
+            { text: "My future. I traded it for their present.", char: "mikasa" }
+        ]
+    },
+    {
+        text: "Would you sacrifice your own happiness for the truth?",
+        options: [
+            { text: "Without question. Happiness is temporary.", char: "hange" },
+            { text: "I already have.", char: "levi" },
+            { text: "What happiness?", char: "reiner" },
+            { text: "I'd try to find both first.", char: "armin" }
+        ]
+    },
+    {
+        text: "Someone else makes a sacrifice for you. How do you carry that?",
+        options: [
+            { text: "I become worth what they paid.", char: "eren" },
+                        { text: "I add it to my debt. I pay it forward.", char: "jean" },
+            { text: "I don't deserve it. But I accept it.", char: "historia" },
+            { text: "I use it. That's what they wanted.", char: "erwin" }
+        ]
+    },
+    {
+        text: "The sacrifice is demanded, not offered. How do you respond?",
+        options: [
+            { text: "I question who demands it and why.", char: "jean" },
+            { text: "I comply. Then I plan my revenge.", char: "annie" },
+            { text: "I do it, but I remember who asked.", char: "levi" },
+            { text: "I refuse. No one owns my choices.", char: "historia" }
+        ]
+    },
+    {
+        text: "Your greatest sacrifice — was it worth it in the end?",
+        options: [
+            { text: "I don't know yet. Ask me when it's over.", char: "eren" },
+            { text: "Worth is measured by others, not me.", char: "erwin" },
+            { text: "Nothing is worth what I paid. But I had to.", char: "reiner" },
+            { text: "It bought time. Time is all we have.", char: "armin" }
+        ]
+    },
+
+    // THEME 6: POWER (10 questions)
+    {
+        text: "Power is given to you. What's your first thought?",
+        options: [
+            { text: "How do I use this without becoming it?", char: "armin" },
+            { text: "Finally. I can finish what I started.", char: "eren" },
+            { text: "Who do I need to protect now?", char: "mikasa" },
+            { text: "This is a tool. Nothing more.", char: "levi" }
+        ]
+    },
+    {
+        text: "What does power feel like in your hands?",
+        options: [
+            { text: "Heavy. It pulls me down.", char: "reiner" },
+            { text: "Right. Like this was always meant.", char: "erwin" },
+            { text: "Dangerous. I have to be careful.", char: "armin" },
+            { text: "Nothing special. It's just responsibility.", char: "levi" }
+        ]
+    },
+    {
+        text: "You have power over someone who hurt you. What do you do?",
+        options: [
+            { text: "Nothing. Power used for revenge is wasted.", char: "erwin" },
+            { text: "Show them I don't need to use it.", char: "levi" },
+            { text: "Make them understand what they did.", char: "eren" },
+            { text: "Walk away. They're not worth the energy.", char: "annie" }
+        ]
+    },
+    {
+        text: "Power changes people. How has it changed you?",
+        options: [
+            { text: "I see more moves ahead. I plan further.", char: "erwin" },
+            { text: "I'm more alone than before.", char: "historia" },
+            { text: "I have more to lose.", char: "mikasa" },
+            { text: "I'm less sure of what's right.", char: "armin" }
+        ]
+    },
+    {
+        text: "What limits your power more — fear or mercy?",
+        options: [
+            { text: "Mercy. I hesitate when I shouldn't.", char: "armin" },
+            { text: "Fear. Of what I'll become if I use it all.", char: "eren" },
+            { text: "Neither. I use exactly what's needed.", char: "levi" },
+            { text: "Both. I'm human despite everything.", char: "jean" }
+        ]
+    },
+    {
+        text: "You meet someone more powerful than you. Your reaction?",
+        options: [
+            { text: "Study them. Learn their weakness.", char: "hange" },
+            { text: "Respect. Power recognizes power.", char: "erwin" },
+            { text: "Fear, hidden behind discipline.", char: "mikasa" },
+            { text: "Indifference. Power isn't everything.", char: "armin" }
+        ]
+    },
+    {
+        text: "Would you give up your power to be free of it?",
+        options: [
+            { text: "Yes. It's a cage I never asked for.", char: "historia" },
+            { text: "No. I need it to finish my work.", char: "erwin" },
+            { text: "I don't know who I am without it.", char: "eren" },
+            { text: "I never wanted power. Just answers.", char: "hange" }
+        ]
+    },
+    {
+        text: "Power corrupts. How do you stay uncorrupted?",
+        options: [
+            { text: "I don't. I just hide it better.", char: "levi" },
+            { text: "I remember who I was before.", char: "historia" },
+            { text: "I don't try to be good. I try to be useful.", char: "erwin" },
+            { text: "I let people see the cracks.", char: "armin" }
+        ]
+    },
+    {
+        text: "What's the true source of your power?",
+        options: [
+            { text: "The people who believe in me", char: "erwin" },
+            { text: "The things I've survived", char: "levi" },
+            { text: "My refusal to stop asking why", char: "hange" },
+            { text: "The weight of what I carry", char: "eren" }
+        ]
+    },
+    {
+        text: "Power is taken from you. Who are you then?",
+        options: [
+            { text: "Just a person. Maybe that's enough.", char: "armin" },
+            { text: "Someone who will get it back.", char: "eren" },
+            { text: "Relieved. It was never mine to hold.", char: "historia" },
+            { text: "The same. Power never defined me.", char: "levi" }
+        ]
+    },
+
+    // THEME 7: WHAT BREAKS YOU (10 questions)
+    {
+        text: "What sound breaks your composure instantly?",
+        options: [
+            { text: "Someone I care about in pain", char: "mikasa" },
+            { text: "The truth I didn't want to hear", char: "armin" },
+            { text: "Silence where there should be voice", char: "levi" },
+            { text: "My own name spoken with disappointment", char: "jean" }
+        ]
+    },
+    {
+        text: "You break down. Where does it happen?",
+        options: [
+            { text: "Alone. Where no one can see.", char: "levi" },
+            { text: "In the middle of doing what I must.", char: "erwin" },
+            { text: "When I finally stop moving.", char: "eren" },
+            { text: "I don't. I broke a long time ago.", char: "reiner" }
+        ]
+    },
+    {
+        text: "What broke in you that you can't fix?",
+        options: [
+            { text: "My ability to trust completely", char: "annie" },
+            { text: "The belief that effort equals reward", char: "jean" },
+            { text: "My sense of who I was supposed to be", char: "historia" },
+            { text: "Nothing. I adapt. I survive.", char: "mikasa" }
+        ]
+    },
+    {
+        text: "You see someone else break. What do you feel?",
+        options: [
+            { text: "Recognition. I've been there.", char: "reiner" },
+            { text: "Urgency. I need to help them hold on.", char: "armin" },
+            { text: "Nothing. I have no comfort to give.", char: "levi" },
+            { text: "Fear. If they broke, I'm next.", char: "jean" }
+        ]
+    },
+    {
+        text: "What keeps you from breaking completely?",
+        options: [
+            { text: "Rage. It burns cleaner than despair.", char: "eren" },
+            { text: "Duty. I don't have permission to break.", char: "erwin" },
+            { text: "Curiosity. I need to know how it ends.", char: "hange" },
+            { text: "Someone who needs me intact.", char: "mikasa" }
+        ]
+    },
+    {
+        text: "Broken pieces of you are where?",
+        options: [
+            { text: "Buried. I don't visit the grave.", char: "levi" },
+            { text: "In the people I couldn't save", char: "erwin" },
+            { text: "Scattered across every choice I made", char: "reiner" },
+            { text: "I swept them up. Built something new.", char: "historia" }
+        ]
+    },
+    {
+        text: "You break someone else. How does that sit with you?",
+        options: [
+            { text: "Heavy. I carry them too now.", char: "armin" },
+            { text: "Necessary. I don't enjoy it.", char: "erwin" },
+            { text: "I try not to think about it.", char: "eren" },
+            { text: "I'm sorry. But I'd do it again.", char: "jean" }
+        ]
+    },
+    {
+        text: "What's the last thing that broke your heart?",
+        options: [
+            { text: "Realizing I couldn't save everyone", char: "armin" },
+            { text: "Understanding what I had to become", char: "eren" },
+            { text: "Watching someone choose to fall", char: "mikasa" },
+            { text: "Remembering who I was before", char: "historia" }
+        ]
+    },
+    {
+        text: "Can you be broken and still be strong?",
+        options: [
+            { text: "Yes. That's the only real strength.", char: "levi" },
+            { text: "No. Broken means something's missing.", char: "eren" },
+            { text: "Strength is just broken pieces held together.", char: "reiner" },
+            { text: "I don't know. I'm still testing it.", char: "jean" }
+        ]
+    },
+    {
+        text: "You break, then rebuild. What do you lose in the rebuilding?",
+        options: [
+            { text: "The illusion that I was whole", char: "armin" },
+            { text: "My patience for things that don't matter", char: "levi" },
+            { text: "The softness I used to have", char: "historia" },
+            { text: "Nothing. I just add more armor.", char: "mikasa" }
+        ]
+    },
+
+    // THEME 8: WEAKER PEOPLE (10 questions)
+    {
+        text: "Someone weaker than you needs protection. Your instinct?",
+        options: [
+            { text: "Step in front. No discussion.", char: "mikasa" },
+            { text: "Teach them to protect themselves", char: "levi" },
+            { text: "Use them as cover for my real move", char: "erwin" },
+            { text: "Question why they're weak in the first place", char: "hange" }
+        ]
+    },
+    {
+        text: "Weakness in others makes you feel what?",
+        options: [
+            { text: "Impatient. But I hide it.", char: "levi" },
+            { text: "Protective. It's not their fault.", char: "armin" },
+            { text: "Contempt. Strength is a choice.", char: "annie" },
+            { text: "Fear. Weakness spreads.", char: "erwin" }
+        ]
+    },
+    {
+        text: "You were once the weak one. How does that memory feel?",
+        options: [
+            { text: "Distant. Like it happened to someone else.", char: "levi" },
+            { text: "Motivating. I never go back there.", char: "eren" },
+            { text: "Embarrassing. I should have been stronger.", char: "jean" },
+            { text: "Important. It taught me compassion.", char: "armin" }
+        ]
+    },
+    {
+        text: "Someone weak refuses your help. What do you do?",
+        options: [
+            { text: "Respect their choice. Watch from distance.", char: "levi" },
+            { text: "Help anyway. Pride kills people.", char: "mikasa" },
+            { text: "Let them fail. It's the only teacher.", char: "annie" },
+            { text: "Understand why they can't accept help", char: "armin" }
+        ]
+    },
+    {
+        text: "What's your definition of true weakness?",
+        options: [
+            { text: "Giving up when you could still fight", char: "eren" },
+            { text: "Hurting others to feel strong", char: "mikasa" },
+            { text: "Refusing to see reality clearly", char: "levi" },
+            { text: "Being cruel when you have power", char: "armin" }
+        ]
+    },
+    {
+        text: "You encounter weakness in yourself. Response?",
+        options: [
+            { text: "Destroy it. Root it out.", char: "eren" },
+            { text: "Hide it. No one can know.", char: "reiner" },
+            { text: "Accept it. Work around it.", char: "armin" },
+            { text: "Use it. It makes me careful.", char: "jean" }
+        ]
+    },
+    {
+        text: "The weak outnumber the strong. Does that matter?",
+        options: [
+            { text: "Yes. Numbers have their own power.", char: "erwin" },
+            { text: "No. One determined person changes everything.", char: "eren" },
+            { text: "Only if the weak organize.", char: "hange" },
+            { text: "It matters to who I choose to save.", char: "mikasa" }
+        ]
+    },
+    {
+        text: "Someone preys on the weak. You see it. What now?",
+        options: [
+            { text: "Stop them. Immediately.", char: "mikasa" },
+            { text: "Document it. Build a case.", char: "hange" },
+            { text: "Wait. See if it serves my goals.", char: "erwin" },
+            { text: "Intervene if it doesn't cost me.", char: "annie" }
+        ]
+    },
+    {
+        text: "Weakness can be strength. When is that true?",
+        options: [
+            { text: "When it makes you ask for help", char: "armin" },
+            { text: "When it keeps you careful", char: "jean" },
+            { text: "When it connects you to others", char: "historia" },
+            { text: "Never. Weakness is just weakness.", char: "levi" }
+        ]
+    },
+    {
+        text: "You must protect someone who can't protect themselves. Forever. Do you accept?",
+        options: [
+            { text: "Yes. Without question.", char: "mikasa" },
+            { text: "Yes. But I train them to stand alone.", char: "levi" },
+            { text: "No. Everyone must learn or die.", char: "annie" },
+            { text: "I accept, but I look for another way.", char: "armin" }
+        ]
+    },
+
+    // THEME 9: FREEDOM (10 questions)
+    {
+        text: "Freedom means what to you?",
+        options: [
+            { text: "No walls. No boundaries. Nothing holding me.", char: "eren" },
+            { text: "The ability to choose my own burden", char: "historia" },
+            { text: "Knowing the truth, even if it hurts", char: "hange" },
+            { text: "Being strong enough to protect my choices", char: "mikasa" }
+        ]
+    },
+    {
+        text: "You're told you're free now. Why doesn't it feel like it?",
+        options: [
+            { text: "The cage was in my head all along", char: "reiner" },
+            { text: "Freedom without purpose is just emptiness", char: "armin" },
+            { text: "I don't know who I am without the fight", char: "eren" },
+            { text: "Someone always pays for my freedom", char: "mikasa" }
+        ]
+    },
+    {
+        text: "What would you do with real freedom?",
+        options: [
+            { text: "See everything I was denied", char: "armin" },
+            { text: "Finally rest", char: "reiner" },
+            { text: "Keep fighting. It's all I know.", char: "eren" },
+            { text: "Choose who I want to be", char: "historia" }
+        ]
+    },
+    {
+        text: "Freedom for you, or freedom for everyone?",
+        options: [
+            { text: "Mine first. Then I help others.", char: "annie" },
+            { text: "Everyone. Or it's not freedom.", char: "armin" },
+            { text: "The concept is too big. I focus on my circle.", char: "levi" },
+            { text: "I don't believe in freedom. Only power.", char: "erwin" }
+        ]
+    },
+    {
+        text: "Who owns your freedom right now?",
+        options: [
+            { text: "My past. It won't let go.", char: "reiner" },
+            { text: "My duty. I gave it willingly.", char: "erwin" },
+            { text: "No one. I fought for every inch.", char: "historia" },
+            { text: "The people I love. I choose that.", char: "mikasa" }
+        ]
+    },
+    {
+        text: "Freedom scares you more than captivity. Why?",
+        options: [
+            { text: "Too many choices. I don't trust myself.", char: "armin" },
+            { text: "I'm not sure who I am without opposition", char: "eren" },
+            { text: "Freedom means I'm responsible for everything", char: "jean" },
+            { text: "I don't know what to want anymore.", char: "reiner" }
+        ]
+    },
+    {
+        text: "You free someone who doesn't want to be free. What then?",
+        options: [
+            { text: "Force them. They'll thank me later.", char: "eren" },
+            { text: "Leave them. Freedom is a choice.", char: "armin" },
+            { text: "Stay and show them why it matters", char: "historia" },
+            { text: "I don't waste time on the unwilling.", char: "annie" }
+        ]
+    },
+    {
+        text: "The price of your freedom is someone else's chains. Pay it?",
+        options: [
+            { text: "No. Find another way or stay chained.", char: "armin" },
+            { text: "Yes. But I carry the weight.", char: "jean" },
+            { text: "Yes. History decides if I was right.", char: "erwin" },
+            { text: "I already have. I dream about it.", char: "reiner" }
+        ]
+    },
+    {
+        text: "Freedom from what specifically?",
+        options: [
+            { text: "From the story others wrote for me", char: "historia" },
+            { text: "From the need to be understood", char: "levi" },
+            { text: "From the walls, literal and otherwise", char: "eren" },
+            { text: "From my own limitations", char: "hange" }
+        ]
+    },
+    {
+        text: "When you're free, who do you become?",
+        options: [
+            { text: "Someone I haven't met yet", char: "historia" },
+            { text: "The same person, but with options", char: "levi" },
+            { text: "I don't know. That's the terrifying part.", char: "armin" },
+            { text: "Whoever I decide to be that day.", char: "hange" }
+        ]
+    },
+
+    // THEME 10: DARK INSTINCTS (10 questions)
+    {
+        text: "You feel violence rising in you. Where does it come from?",
+        options: [
+            { text: "The need to protect what's mine", char: "mikasa" },
+            { text: "The rage at everything taken from me", char: "eren" },
+            { text: "The cold calculation that it's necessary", char: "levi" },
+            { text: "I don't know. It just lives there.", char: "reiner" }
+        ]
+    },
+    {
+        text: "Your darkest thought — what is it?",
+        options: [
+            { text: "Everyone I love would be safer without me", char: "reiner" },
+            { text: "Sometimes I want to destroy everything", char: "eren" },
+            { text: "I enjoy the moments before I strike", char: "annie" },
+            { text: "I think about what they'd say at my funeral", char: "jean" }
+        ]
+    },
+    {
+        text: "You act on instinct. Later, you regret it. How often?",
+        options: [
+            { text: "Never. My instincts are correct.", char: "levi" },
+            { text: "Always. I should think more.", char: "armin" },
+            { text: "Sometimes. But I'd do it again.", char: "eren" },
+            { text: "I don't let myself regret. It's wasteful.", char: "erwin" }
+        ]
+    },
+    {
+        text: "What darkness in you do you hide from everyone?",
+        options: [
+            { text: "The pleasure I take in being right", char: "hange" },
+            { text: "The fact that I don't feel what they feel", char: "annie" },
+            { text: "How much I enjoy the fight", char: "mikasa" },
+            { text: "That I'm not sure I want to save them all", char: "jean" }
+        ]
+    },
+    {
+        text: "Your shadow self wants what?",
+        options: [
+            { text: "To stop. To lay down. To rest.", char: "reiner" },
+            { text: "To burn it all and start clean", char: "eren" },
+            { text: "To be seen without being known", char: "levi" },
+            { text: "To be ordinary. Just once.", char: "historia" }
+        ]
+    },
+    {
+        text: "You hurt someone because it felt right. Now?",
+        options: [
+            { text: "I check if it was necessary. Then I move on.", char: "levi" },
+            { text: "I justify it until I believe it.", char: "erwin" },
+            { text: "I feel alive. Then I feel sick.", char: "eren" },
+            { text: "I don't think about it. It's done.", char: "annie" }
+        ]
+    },
+    {
+        text: "What feeds the dark part of you?",
+        options: [
+            { text: "Injustice. It makes me want to break things.", char: "eren" },
+            { text: "Secrets. Knowing what others don't.", char: "hange" },
+                        { text: "Fear. My own and others'.", char: "annie" },
+            { text: "Loss. It accumulates.", char: "levi" }
+        ]
+    },
+    {
+        text: "Can you be good with dark instincts?",
+        options: [
+            { text: "Yes. I aim them at the right targets.", char: "erwin" },
+            { text: "I don't try to be good. I try to be useful.", char: "levi" },
+            { text: "No. The darkness corrupts everything.", char: "armin" },
+            { text: "Good is just darkness pointed differently.", char: "eren" }
+        ]
+    },
+    {
+        text: "Your dark side takes control. What's left when you come back?",
+        options: [
+            { text: "Shame. And a mess to clean.", char: "jean" },
+            { text: "Clarity. Sometimes darkness sees better.", char: "hange" },
+            { text: "Nothing. I'm still there. Just quieter.", char: "annie" },
+            { text: "Determination. To never lose control again.", char: "mikasa" }
+        ]
+    },
+    {
+        text: "The darkest thing you've done — was it worth it?",
+        options: [
+            { text: "Yes. I'm here. That's the proof.", char: "levi" },
+            { text: "I don't measure worth that way.", char: "erwin" },
+            { text: "No. But I didn't see another way.", char: "armin" },
+            { text: "Ask me when the dust settles.", char: "eren" }
+        ]
+    },
+
+    // THEME 11: HOW OTHERS SEE YOU (10 questions)
+    {
+        text: "People describe you in one word behind your back. What is it?",
+        options: [
+            { text: "Intense", char: "eren" },
+            { text: "Cold", char: "levi" },
+            { text: "Strange", char: "hange" },
+            { text: "Steady", char: "mikasa" }
+        ]
+    },
+    {
+        text: "You enter a room. What changes in the atmosphere?",
+        options: [
+            { text: "People get quieter. More careful.", char: "levi" },
+            { text: "They look to me for what to do next", char: "erwin" },
+            { text: "Nothing. I don't make entrances.", char: "annie" },
+            { text: "Energy shifts. They know something's coming.", char: "eren" }
+        ]
+    },
+    {
+        text: "Someone underestimates you. How do you feel?",
+        options: [
+            { text: "Good. Let them.", char: "armin" },
+            { text: "Insulted. I'll prove them wrong.", char: "jean" },
+            { text: "Nothing. Their mistake.", char: "annie" },
+            { text: "Relieved. Less pressure.", char: "historia" }
+        ]
+    },
+    {
+        text: "What do people get wrong about you most often?",
+        options: [
+            { text: "That I'm fearless. I'm not.", char: "mikasa" },
+            { text: "That I don't care. I care too much.", char: "armin" },
+            { text: "That I'm in control. I'm barely holding on.", char: "reiner" },
+            { text: "That I'm complicated. I'm very simple.", char: "levi" }
+        ]
+    },
+    {
+        text: "You're remembered for what?",
+        options: [
+            { text: "What I broke", char: "eren" },
+            { text: "What I built", char: "hange" },
+            { text: "What I protected", char: "mikasa" },
+            { text: "What I chose", char: "historia" }
+        ]
+    },
+    {
+        text: "People are intimidated by you. Why?",
+        options: [
+            { text: "I see through performance", char: "levi" },
+            { text: "I don't need them to like me", char: "annie" },
+            { text: "I'll do what they won't", char: "eren" },
+            { text: "I carry weight they can't see", char: "erwin" }
+        ]
+    },
+    {
+        text: "You overhear someone praising you. Reaction?",
+        options: [
+            { text: "Uncomfortable. Praise makes me soft.", char: "levi" },
+            { text: "Suspicious. What do they want?", char: "annie" },
+            { text: "Proud. I worked for this.", char: "jean" },
+            { text: "Sad. They don't know the real me.", char: "reiner" }
+        ]
+    },
+    {
+        text: "How do you want to be seen?",
+        options: [
+            { text: "As someone who kept their word", char: "levi" },
+            { text: "As someone who changed things", char: "eren" },
+            { text: "As someone who tried", char: "armin" },
+            { text: "I don't care how I'm seen.", char: "annie" }
+        ]
+    },
+    {
+        text: "People trust you with what?",
+        options: [
+            { text: "Their lives", char: "mikasa" },
+            { text: "Their secrets", char: "armin" },
+            { text: "Their doubts", char: "jean" },
+            { text: "Nothing. I don't ask for trust.", char: "levi" }
+        ]
+    },
+    {
+        text: "You're misjudged. Do you correct them?",
+        options: [
+            { text: "No. Let them think what they want.", char: "annie" },
+            { text: "Only if it affects the mission", char: "erwin" },
+            { text: "Yes. I hate being misunderstood.", char: "armin" },
+            { text: "I show them instead of telling.", char: "eren" }
+        ]
+    },
+
+    // THEME 12: LOSING SOMEONE (10 questions)
+    {
+        text: "The moment you knew they were gone. What do you remember?",
+        options: [
+            { text: "The silence after", char: "levi" },
+            { text: "What I was doing when I found out", char: "mikasa" },
+            { text: "The thing I never said", char: "armin" },
+            { text: "Nothing. I went numb.", char: "reiner" }
+        ]
+    },
+    {
+        text: "You visit their grave. What do you bring?",
+        options: [
+            { text: "Nothing. They know.", char: "levi" },
+            { text: "A report. What happened since.", char: "erwin" },
+            { text: "Myself. That's all I have.", char: "mikasa" },
+            { text: "I don't visit. I can't.", char: "jean" }
+        ]
+    },
+    {
+        text: "Guilt about the dead — do you carry it?",
+        options: [
+            { text: "Every name. Every face.", char: "erwin" },
+            { text: "Only if I could have changed it.", char: "armin" },
+            { text: "No. Death is just math.", char: "levi" },
+            { text: "More than I can say.", char: "reiner" }
+        ]
+    },
+    {
+        text: "You dream about them. What happens in the dream?",
+        options: [
+            { text: "They're disappointed in what I've become", char: "eren" },
+            { text: "They don't recognize me", char: "reiner" },
+            { text: "We're back where we started", char: "armin" },
+            { text: "I don't dream. I trained it away.", char: "mikasa" }
+        ]
+    },
+    {
+        text: "Someone replaces them in your life. How do you feel?",
+        options: [
+            { text: "Betrayed. They can't be replaced.", char: "eren" },
+            { text: "Grateful. Life goes on.", char: "jean" },
+            { text: "Guilty. For letting someone in.", char: "levi" },
+            { text: "Nothing. People come and go.", char: "annie" }
+        ]
+    },
+    {
+        text: "What would they say if they saw you now?",
+        options: [
+            { text: "They'd be proud. I kept going.", char: "mikasa" },
+            { text: "They wouldn't know me.", char: "historia" },
+            { text: "They'd ask why I'm still fighting.", char: "eren" },
+            { text: "They'd understand. They always did.", char: "armin" }
+        ]
+    },
+    {
+        text: "You have something of theirs. What is it?",
+        options: [
+            { text: "A weapon. I use it.", char: "levi" },
+            { text: "A memory. I visit it.", char: "armin" },
+            { text: "Nothing. I let it all go.", char: "annie" },
+            { text: "A burden. They passed it to me.", char: "erwin" }
+        ]
+    },
+    {
+        text: "The anniversary hits you. Where are you?",
+        options: [
+            { text: "Working. I don't acknowledge it.", char: "levi" },
+            { text: "Alone. Where they can't see.", char: "reiner" },
+            { text: "With someone who understands", char: "armin" },
+            { text: "Anywhere. It follows me.", char: "jean" }
+        ]
+    },
+    {
+        text: "You could bring them back, but someone else dies. Do you?",
+        options: [
+            { text: "No. That's not my choice to make.", char: "armin" },
+            { text: "Yes. I'd trade anyone for them.", char: "eren" },
+            { text: "I'd want to. But I wouldn't.", char: "mikasa" },
+            { text: "I've already made worse trades.", char: "reiner" }
+        ]
+    },
+    {
+        text: "They're really gone when you stop what?",
+        options: [
+            { text: "Expecting them to walk in", char: "levi" },
+            { text: "Asking what they'd think", char: "erwin" },
+            { text: "Dreaming about saving them", char: "mikasa" },
+            { text: "I haven't stopped anything.", char: "jean" }
+        ]
+    },
+
+    // THEME 13: DISOBEYING (10 questions)
+    {
+        text: "An order comes down that violates everything. Your move?",
+        options: [
+            { text: "Disobey. Openly.", char: "eren" },
+            { text: "Disobey. Quietly.", char: "levi" },
+            { text: "Follow. Then change the system.", char: "armin" },
+            { text: "Question it first. Always question.", char: "hange" }
+        ]
+    },
+    {
+        text: "You've disobeyed before. What did it cost you?",
+        options: [
+            { text: "Trust. They watch me closer now.", char: "jean" },
+            { text: "Nothing. I was right.", char: "eren" },
+            { text: "Sleep. I still question it.", char: "armin" },
+            { text: "Everything. And I'd do it again.", char: "historia" }
+        ]
+    },
+    {
+        text: "Authority you respect — what earns it?",
+        options: [
+            { text: "Competence. Nothing else.", char: "levi" },
+            { text: "Vision. Seeing what I can't.", char: "erwin" },
+            { text: "Sacrifice. They've paid too.", char: "mikasa" },
+            { text: "Nothing. Authority is a tool.", char: "annie" }
+        ]
+    },
+    {
+        text: "You disobey and succeed. Do you confess?",
+        options: [
+            { text: "No. Success justifies the method.", char: "erwin" },
+            { text: "Yes. Honesty is my only currency.", char: "armin" },
+            { text: "Only if asked directly.", char: "levi" },
+            { text: "I don't think about it.", char: "mikasa" }
+        ]
+    },
+    {
+        text: "The chain of command breaks. What do you do?",
+        options: [
+            { text: "Take command. Someone has to.", char: "erwin" },
+            { text: "Protect those I can. Let the rest sort out.", char: "mikasa" },
+            { text: "Act on my own judgment.", char: "levi" },
+            { text: "Wait. See who steps up.", char: "jean" }
+        ]
+    },
+    {
+        text: "You follow an order you disagree with. Why?",
+        options: [
+            { text: "The bigger picture matters more.", char: "erwin" },
+            { text: "I trust the person who gave it.", char: "mikasa" },
+            { text: "I'm not sure I'm right.", char: "armin" },
+            { text: "I have no choice.", char: "reiner" }
+        ]
+    },
+    {
+        text: "Disobedience is justified when?",
+        options: [
+            { text: "When the order serves evil", char: "armin" },
+            { text: "When I know better than them", char: "eren" },
+            { text: "When lives are at stake", char: "mikasa" },
+            { text: "When I can get away with it", char: "annie" }
+        ]
+    },
+    {
+        text: "You're punished for doing the right thing. Response?",
+        options: [
+            { text: "Accept it. Right doesn't mean easy.", char: "levi" },
+            { text: "Fight the punishment. I won't accept it.", char: "eren" },
+            { text: "Use it. Makes me look principled.", char: "jean" },
+            { text: "I knew it was coming. Doesn't matter.", char: "erwin" }
+        ]
+    },
+    {
+        text: "Someone disobeys your order. How do you react?",
+        options: [
+            { text: "Judge if they were right. Then decide.", char: "erwin" },
+            { text: "Punish. Discipline must hold.", char: "levi" },
+            { text: "Listen. They might see something I don't.", char: "armin" },
+            { text: "Ignore it. I don't care about orders.", char: "annie" }
+        ]
+    },
+    {
+        text: "The system is wrong. Do you work inside or outside it?",
+        options: [
+            { text: "Inside. Change it from within.", char: "armin" },
+            { text: "Outside. Burn it if I have to.", char: "eren" },
+            { text: "Both. Whatever works.", char: "erwin" },
+            { text: "I don't try to change systems.", char: "levi" }
+        ]
+    },
+
+    // THEME 14: LOYALTY (10 questions)
+    {
+        text: "Loyalty to what — person, principle, or people?",
+        options: [
+            { text: "Person. One is enough.", char: "mikasa" },
+            { text: "Principle. Everything else shifts.", char: "levi" },
+            { text: "People. The ones I choose.", char: "armin" },
+            { text: "Goal. Loyalty to anything else is weakness.", char: "erwin" }
+        ]
+    },
+    {
+        text: "Your loyalty is tested. What's the breaking point?",
+        options: [
+            { text: "Betrayal of the mission", char: "erwin" },
+            { text: "Hurting the innocent", char: "armin" },
+            { text: "They stop being who I thought they were", char: "mikasa" },
+            { text: "I don't have one. I'm already broken.", char: "reiner" }
+        ]
+    },
+    {
+        text: "Someone questions your loyalty. How do you prove it?",
+        options: [
+            { text: "I don't. Proof is for the insecure.", char: "levi" },
+            { text: "I show up when it matters.", char: "mikasa" },
+            { text: "I explain my reasoning. Let them decide.", char: "armin" },
+            { text: "I do something they can't question.", char: "eren" }
+        ]
+    },
+    {
+        text: "You've been loyal to the wrong thing. How do you know?",
+        options: [
+            { text: "When it asks me to become someone I hate", char: "armin" },
+            { text: "When the cost exceeds the value", char: "erwin" },
+            { text: "I don't. I just keep going.", char: "reiner" },
+            { text: "When someone I trust tells me.", char: "jean" }
+        ]
+    },
+    {
+        text: "Loyalty without question — is that strength or weakness?",
+        options: [
+            { text: "Weakness. Blind loyalty is dangerous.", char: "armin" },
+            { text: "Strength. Doubt kills action.", char: "mikasa" },
+            { text: "It depends what you're loyal to.", char: "levi" },
+            { text: "It's survival. Nothing more.", char: "reiner" }
+        ]
+    },
+    {
+        text: "You switch sides. What do you tell your old loyalty?",
+        options: [
+            { text: "Nothing. They know why.", char: "annie" },
+            { text: "I'm sorry. But I'm not wrong.", char: "armin" },
+            { text: "You left me no choice.", char: "eren" },
+            { text: "I don't explain myself.", char: "levi" }
+        ]
+    },
+    {
+        text: "Who deserves your loyalty most?",
+        options: [
+            { text: "The one who saw me first", char: "mikasa" },
+            { text: "The one who challenges me to be better", char: "armin" },
+            { text: "The one who shares my burden", char: "levi" },
+            { text: "The one who will finish what I started", char: "erwin" }
+        ]
+    },
+    {
+        text: "Loyalty is betrayed. Do you try to rebuild it?",
+        options: [
+            { text: "No. Once broken, it's broken.", char: "annie" },
+            { text: "Yes. If they earn it back.", char: "mikasa" },
+            { text: "I assess if it's worth rebuilding.", char: "erwin" },
+            { text: "I never fully trusted anyway.", char: "levi" }
+        ]
+    },
+    {
+        text: "Your loyalty makes you do what you hate. Do you continue?",
+        options: [
+            { text: "Yes. That's what loyalty means.", char: "mikasa" },
+            { text: "No. I have limits.", char: "armin" },
+            { text: "I find another way.", char: "jean" },
+            { text: "I already have. Many times.", char: "reiner" }
+        ]
+    },
+    {
+        text: "Loyalty to the dead — is that real or ritual?",
+        options: [
+            { text: "Real. They still shape my choices.", char: "erwin" },
+            { text: "Ritual. I do it for me, not them.", char: "levi" },
+            { text: "Both. I can't separate them.", char: "armin" },
+            { text: "I don't think about the dead.", char: "annie" }
+        ]
+    },
+
+    // THEME 15: MORAL LINES (10 questions)
+    {
+        text: "Is there a line you won't cross, no matter what?",
+        options: [
+            { text: "Yes. And I know exactly where it is.", char: "armin" },
+            { text: "I thought so. I was wrong.", char: "reiner" },
+            { text: "No. Lines are for people with options.", char: "erwin" },
+            { text: "I'm still looking for it.", char: "jean" }
+        ]
+    },
+    {
+        text: "You cross your line to save many. Are you still you?",
+        options: [
+            { text: "No. But I saved them.", char: "eren" },
+            { text: "Yes. The line was wrong.", char: "erwin" },
+            { text: "I don't know. That's the horror.", char: "armin" },
+            { text: "I'm whatever I need to be.", char: "annie" }
+        ]
+    },
+    {
+        text: "Moral certainty — do you have it?",
+        options: [
+            { text: "Yes. Rarely, but when it counts.", char: "mikasa" },
+            { text: "No. I fake it for others.", char: "armin" },
+            { text: "I had it. I lost it.", char: "reiner" },
+            { text: "I don't need it. I have duty.", char: "levi" }
+        ]
+    },
+    {
+        text: "Someone else crosses your line. Do you stop them?",
+        options: [
+            { text: "Yes. Even if it costs me.", char: "armin" },
+            { text: "Only if it affects my mission.", char: "erwin" },
+            { text: "No. Their line is theirs.", char: "annie" },
+            { text: "I judge the result, not the crossing.", char: "levi" }
+        ]
+    },
+    {
+        text: "Your moral code — where did it come from?",
+        options: [
+            { text: "The people who raised me", char: "mikasa" },
+            { text: "The things I survived", char: "levi" },
+            { text: "Books. Ideas. Better minds than mine.", char: "armin" },
+            { text: "I built it myself. Piece by piece.", char: "jean" }
+        ]
+    },
+    {
+        text: "You do something wrong for the right reason. Does it balance?",
+        options: [
+            { text: "No. Wrong is wrong. I carry it.", char: "armin" },
+            { text: "Yes. Intent matters more than action.", char: "erwin" },
+            { text: "Balance is for accountants, not soldiers.", char: "levi" },
+            { text: "I don't think about balance.", char: "mikasa" }
+        ]
+    },
+    {
+        text: "Is morality a luxury of peacetime?",
+        options: [
+            { text: "Yes. War has its own rules.", char: "erwin" },
+            { text: "No. It's most important when it's hardest.", char: "armin" },
+            { text: "Morality is whatever keeps you human.", char: "jean" },
+            { text: "I don't know. I've never known peace.", char: "eren" }
+        ]
+    },
+    {
+        text: "You find out your side committed atrocities. What do you do?",
+        options: [
+            { text: "Expose it. Truth matters more than loyalty.", char: "armin" },
+            { text: "Use it. Leverage is power.", char: "hange" },
+            { text: "Accept it. War is ugly.", char: "levi" },
+            { text: "I'm not surprised. I'm tired.", char: "reiner" }
+        ]
+    },
+    {
+        text: "Can you be moral and effective?",
+        options: [
+                        { text: "Rarely. Usually you choose one.", char: "erwin" },
+            { text: "Yes. That's the only way worth being.", char: "armin" },
+            { text: "Effectiveness is my morality.", char: "levi" },
+            { text: "I don't care about being moral.", char: "annie" }
+        ]
+    },
+    {
+        text: "Your moral failing — what is it?",
+        options: [
+            { text: "I can justify anything if I try hard enough", char: "armin" },
+            { text: "I don't feel guilt when I should", char: "levi" },
+            { text: "I let my feelings override my judgment", char: "eren" },
+            { text: "I don't know. That's probably it.", char: "jean" }
+        ]
+    },
+
+    // THEME 16: FEAR (10 questions)
+    {
+        text: "What are you most afraid of?",
+        options: [
+            { text: "Being useless", char: "armin" },
+            { text: "Losing the ones I protect", char: "mikasa" },
+            { text: "Becoming what I fight", char: "eren" },
+            { text: "Dying without purpose", char: "erwin" }
+        ]
+    },
+    {
+        text: "Fear hits you in the field. What do you do with it?",
+        options: [
+            { text: "Use it. Makes me sharp.", char: "levi" },
+            { text: "Hide it. No one can see.", char: "mikasa" },
+            { text: "Accept it. Keep moving.", char: "armin" },
+            { text: "Let it fuel me. Then let it go.", char: "jean" }
+        ]
+    },
+    {
+        text: "You show fear. What happens?",
+        options: [
+            { text: "They lose confidence in me.", char: "erwin" },
+            { text: "Nothing. Everyone is afraid.", char: "armin" },
+            { text: "I lose confidence in myself.", char: "jean" },
+            { text: "I don't show fear.", char: "mikasa" }
+        ]
+    },
+    {
+        text: "Fear of death — do you have it?",
+        options: [
+            { text: "Yes. But I act anyway.", char: "armin" },
+            { text: "No. I've accepted it.", char: "levi" },
+            { text: "I'm afraid of how I'll die, not death itself.", char: "jean" },
+            { text: "I'm afraid of what comes after.", char: "reiner" }
+        ]
+    },
+    {
+        text: "What scares you that you won't admit?",
+        options: [
+            { text: "That I'm not special", char: "jean" },
+            { text: "That I'll hurt someone I love", char: "mikasa" },
+            { text: "That nothing I do matters", char: "armin" },
+            { text: "That I'll stop caring", char: "levi" }
+        ]
+    },
+    {
+        text: "You face your fear. Does it shrink or grow?",
+        options: [
+            { text: "Shrinks. Exposure kills it.", char: "levi" },
+            { text: "Grows. I understand it better.", char: "armin" },
+            { text: "Changes. Becomes something else.", char: "eren" },
+            { text: "Stays the same. I just get used to it.", char: "reiner" }
+        ]
+    },
+    {
+        text: "Fear for others vs fear for self — which is stronger?",
+        options: [
+            { text: "For others. Always.", char: "mikasa" },
+            { text: "For self. I'm not a martyr.", char: "annie" },
+            { text: "They're the same. We're connected.", char: "armin" },
+            { text: "I don't distinguish. Fear is fear.", char: "levi" }
+        ]
+    },
+    {
+        text: "You use fear as a tool. On whom?",
+        options: [
+            { text: "Enemies. It's efficient.", char: "erwin" },
+            { text: "Myself. Keeps me sharp.", char: "levi" },
+            { text: "I don't. Fear is toxic.", char: "armin" },
+            { text: "Anyone who stands in my way.", char: "eren" }
+        ]
+    },
+    {
+        text: "The fearless person — do you trust them?",
+        options: [
+            { text: "No. Fear is rational.", char: "armin" },
+            { text: "Yes. They're reliable.", char: "mikasa" },
+            { text: "Depends what they're fearless about.", char: "levi" },
+            { text: "I don't trust anyone.", char: "annie" }
+        ]
+    },
+    {
+        text: "Your fear has a shape. What does it look like?",
+        options: [
+            { text: "The person I could become", char: "eren" },
+            { text: "The people I've failed", char: "erwin" },
+            { text: "A blank space where meaning should be", char: "armin" },
+            { text: "I don't look at it directly.", char: "levi" }
+        ]
+    },
+
+    // THEME 17: BEING MISUNDERSTOOD (10 questions)
+    {
+        text: "You're misunderstood. Do you correct them?",
+        options: [
+            { text: "No. Their mistake.", char: "annie" },
+            { text: "Yes. I hate being seen wrong.", char: "armin" },
+            { text: "Only if it affects my work.", char: "levi" },
+            { text: "I show them instead.", char: "eren" }
+        ]
+    },
+    {
+        text: "Why are you misunderstood most often?",
+        options: [
+            { text: "I don't explain myself", char: "levi" },
+            { text: "I'm more complicated than I appear", char: "armin" },
+            { text: "People see what they want to see", char: "historia" },
+            { text: "I change too fast to be known", char: "eren" }
+        ]
+    },
+    {
+        text: "Being truly known — do you want it?",
+        options: [
+            { text: "No. It's dangerous.", char: "annie" },
+            { text: "Yes. With one person.", char: "mikasa" },
+            { text: "I don't think it's possible.", char: "levi" },
+            { text: "I'm afraid of what they'd find.", char: "reiner" }
+        ]
+    },
+    {
+        text: "Someone finally understands you. Your reaction?",
+        options: [
+            { text: "Gratitude. It's rare.", char: "armin" },
+            { text: "Suspicion. What do they want?", char: "levi" },
+            { text: "Fear. Now they have power over me.", char: "annie" },
+            { text: "Nothing. I expected it.", char: "erwin" }
+        ]
+    },
+    {
+        text: "You misunderstand someone else. How do you find out?",
+        options: [
+            { text: "They tell me. I listen.", char: "armin" },
+            { text: "I don't. I assume I'm right.", char: "eren" },
+            { text: "Their actions prove me wrong.", char: "levi" },
+            { text: "Someone else points it out.", char: "jean" }
+        ]
+    },
+    {
+        text: "Misunderstanding causes conflict. Who's responsible?",
+        options: [
+            { text: "The one who didn't communicate clearly.", char: "armin" },
+            { text: "The one who didn't listen.", char: "mikasa" },
+            { text: "Both. Communication takes two.", char: "jean" },
+            { text: "No one. It just happens.", char: "levi" }
+        ]
+    },
+    {
+        text: "You'd rather be misunderstood as what?",
+        options: [
+            { text: "Cold than weak", char: "levi" },
+            { text: "Weak than cruel", char: "armin" },
+            { text: "Stupid than dangerous", char: "jean" },
+            { text: "Dangerous than nothing", char: "eren" }
+        ]
+    },
+    {
+        text: "The gap between how you seem and how you are — how wide?",
+        options: [
+            { text: "A canyon. No one has crossed it.", char: "levi" },
+            { text: "A crack. Close enough to jump.", char: "armin" },
+            { text: "I don't know. I can't see myself.", char: "reiner" },
+            { text: "There is no gap. I am what I seem.", char: "mikasa" }
+        ]
+    },
+    {
+        text: "Being understood is what?",
+        options: [
+            { text: "A relief", char: "armin" },
+            { text: "A risk", char: "annie" },
+            { text: "A distraction", char: "erwin" },
+            { text: "A goal", char: "historia" }
+        ]
+    },
+    {
+        text: "You understand someone nobody else does. What do you do with that?",
+        options: [
+            { text: "Protect them. It's a bond.", char: "mikasa" },
+            { text: "Use it. Knowledge is power.", char: "hange" },
+            { text: "Keep it. They don't need to know.", char: "levi" },
+            { text: "Tell them. Everyone deserves to be seen.", char: "armin" }
+        ]
+    },
+
+    // THEME 18: LEGACY (10 questions)
+    {
+        text: "What do you want to leave behind?",
+        options: [
+            { text: "A world different than I found it", char: "eren" },
+            { text: "People who can continue without me", char: "erwin" },
+            { text: "Truth. Even if it's ugly.", char: "hange" },
+            { text: "Nothing. I don't need to be remembered.", char: "levi" }
+        ]
+    },
+    {
+        text: "Your legacy is written by who?",
+        options: [
+            { text: "History. I can't control it.", char: "erwin" },
+            { text: "The people I touched directly", char: "armin" },
+            { text: "No one. I'll be forgotten.", char: "annie" },
+            { text: "Me. I'm still writing it.", char: "eren" }
+        ]
+    },
+    {
+        text: "Legacy matters to you why?",
+        options: [
+            { text: "It doesn't. Dead is dead.", char: "levi" },
+            { text: "It motivates me while I'm here.", char: "erwin" },
+            { text: "I want to matter after I'm gone.", char: "jean" },
+            { text: "I want to warn those who come after.", char: "reiner" }
+        ]
+    },
+    {
+        text: "You're remembered for the wrong thing. Do you correct history?",
+        options: [
+            { text: "No. Let them have their story.", char: "levi" },
+            { text: "Yes. Truth is worth fighting for.", char: "hange" },
+            { text: "Only if it hurts people I care about.", char: "mikasa" },
+            { text: "I won't be around to care.", char: "annie" }
+        ]
+    },
+    {
+        text: "Your greatest achievement will be what?",
+        options: [
+            { text: "Surviving", char: "levi" },
+            { text: "Changing something that seemed fixed", char: "eren" },
+            { text: "Keeping someone safe", char: "mikasa" },
+            { text: "Understanding something new", char: "hange" }
+        ]
+    },
+    {
+        text: "Someone inherits your work. What do you hope they do?",
+        options: [
+            { text: "Surpass me", char: "erwin" },
+            { text: "Question everything I did", char: "armin" },
+            { text: "Finish what I couldn't", char: "eren" },
+            { text: "Make their own path", char: "historia" }
+        ]
+    },
+    {
+        text: "Legacy is built on what foundation?",
+        options: [
+            { text: "Sacrifice", char: "erwin" },
+            { text: "Truth", char: "hange" },
+            { text: "Love", char: "mikasa" },
+            { text: "Will", char: "eren" }
+        ]
+    },
+    {
+        text: "You're forgotten within a generation. How do you feel?",
+        options: [
+            { text: "Relieved. The weight is gone.", char: "levi" },
+            { text: "Sad. I wanted to matter.", char: "jean" },
+            { text: "Accepting. That's how it goes.", char: "armin" },
+            { text: "Angry. I earned better.", char: "eren" }
+        ]
+    },
+    {
+        text: "What do you want written on your stone?",
+        options: [
+            { text: "Nothing. Stones are for the living.", char: "levi" },
+            { text: "They tried", char: "armin" },
+            { text: "They kept moving forward", char: "eren" },
+            { text: "Beloved", char: "mikasa" }
+        ]
+    },
+    {
+        text: "Your legacy is your enemy's victory. Do you let them have it?",
+        options: [
+            { text: "No. I'll destroy it first.", char: "eren" },
+            { text: "Yes. If it ends the conflict.", char: "armin" },
+            { text: "I don't care about legacy.", char: "annie" },
+            { text: "I'll shape it so they can't twist it.", char: "erwin" }
+        ]
+    },
+
+    // THEME 19: CRISIS RESPONSE (10 questions)
+    {
+        text: "Crisis hits. What's your first move?",
+        options: [
+            { text: "Assess. Then act.", char: "levi" },
+            { text: "Protect the vulnerable first", char: "mikasa" },
+            { text: "Find the source of the crisis", char: "hange" },
+            { text: "Take charge. Someone has to.", char: "erwin" }
+        ]
+    },
+    {
+        text: "Everyone panics. You feel what?",
+        options: [
+            { text: "Calm. This is my environment.", char: "levi" },
+            { text: "Fear, but I hide it.", char: "armin" },
+            { text: "Energy. Finally, something real.", char: "eren" },
+            { text: "Responsibility. I have to hold this together.", char: "erwin" }
+        ]
+    },
+    {
+        text: "Crisis reveals what about people?",
+        options: [
+            { text: "Who they really are", char: "levi" },
+            { text: "What they value most", char: "armin" },
+            { text: "Their potential", char: "erwin" },
+            { text: "Their limits", char: "annie" }
+        ]
+    },
+    {
+        text: "You make a call in crisis. It's wrong. What now?",
+        options: [
+            { text: "Adapt. Fix it. Don't dwell.", char: "levi" },
+            { text: "Accept the cost. Learn.", char: "erwin" },
+            { text: "Apologize to those hurt.", char: "armin" },
+            { text: "I don't make wrong calls.", char: "eren" }
+        ]
+    },
+    {
+        text: "Crisis ends. What do you do first?",
+        options: [
+            { text: "Check on my people", char: "mikasa" },
+            { text: "Review what went wrong", char: "hange" },
+            { text: "Rest. Finally.", char: "reiner" },
+            { text: "Prepare for the next one", char: "erwin" }
+        ]
+    },
+    {
+        text: "Someone freezes in crisis. Your response?",
+        options: [
+            { text: "Push past them. Keep moving.", char: "levi" },
+            { text: "Pull them with me.", char: "mikasa" },
+            { text: "Work around them.", char: "erwin" },
+            { text: "Leave them. Dead weight.", char: "annie" }
+        ]
+    },
+    {
+        text: "Crisis brings out your best or worst?",
+        options: [
+            { text: "Best. I'm built for this.", char: "levi" },
+            { text: "Both. I see what I'm capable of.", char: "armin" },
+            { text: "Worst. I do what I have to.", char: "eren" },
+            { text: "Neither. I'm the same.", char: "mikasa" }
+        ]
+    },
+    {
+        text: "You thrive in crisis. Why?",
+        options: [
+            { text: "Clear purpose. No distractions.", char: "levi" },
+            { text: "Adrenaline. I'm addicted.", char: "eren" },
+            { text: "I'm needed. That matters.", char: "mikasa" },
+            { text: "I don't thrive. I survive.", char: "reiner" }
+        ]
+    },
+    {
+        text: "Crisis after crisis. How do you avoid burnout?",
+        options: [
+            { text: "I don't. I just keep going.", char: "eren" },
+            { text: "Compartmentalize. Strictly.", char: "levi" },
+            { text: "Find moments of peace where I can.", char: "armin" },
+            { text: "I have people who hold me up.", char: "jean" }
+        ]
+    },
+    {
+        text: "The permanent crisis — how do you live in it?",
+        options: [
+            { text: "Accept it as normal.", char: "levi" },
+            { text: "Fight to end it.", char: "eren" },
+            { text: "Find meaning within it.", char: "armin" },
+            { text: "Survive one day at a time.", char: "reiner" }
+        ]
+    },
+
+    // THEME 20: THE FOUNDING TITAN (10 questions - AOT specific)
+    {
+        text: "The power to change everything is offered. Take it?",
+        options: [
+            { text: "Yes. Whatever the cost.", char: "eren" },
+            { text: "Only if I can control it.", char: "armin" },
+            { text: "No. Power that vast corrupts.", char: "levi" },
+            { text: "I need to understand it first.", char: "hange" }
+        ]
+    },
+    {
+        text: "You inherit the memories of the past. What do you do with them?",
+        options: [
+            { text: "Learn from them. All of them.", char: "hange" },
+            { text: "Use them to guide my choices.", char: "armin" },
+            { text: "Reject them. I'm not my ancestors.", char: "historia" },
+            { text: "Let them fuel my rage.", char: "eren" }
+        ]
+    },
+    {
+        text: "The Coordinate connects all. How does that feel?",
+        options: [
+            { text: "Heavy. Too many voices.", char: "armin" },
+            { text: "Right. Like coming home.", char: "eren" },
+            { text: "Useful. A tool to wield.", char: "erwin" },
+            { text: "Terrifying. I don't want connection.", char: "annie" }
+        ]
+    },
+    {
+        text: "You can rewrite the past in minds. Do you?",
+        options: [
+            { text: "No. Truth is sacred.", char: "armin" },
+            { text: "Only to prevent greater harm.", char: "erwin" },
+            { text: "Yes. If it serves the future.", char: "eren" },
+            { text: "I don't trust myself with that choice.", char: "jean" }
+        ]
+    },
+    {
+        text: "The power demands a price in years. Pay it?",
+        options: [
+            { text: "Yes. Time is currency.", char: "erwin" },
+            { text: "No. I won't be shortened.", char: "annie" },
+            { text: "If the cause is worth it.", char: "mikasa" },
+            { text: "I already have. I feel it.", char: "eren" }
+        ]
+    },
+    {
+        text: "You see through your predecessor's eyes. What do they tell you?",
+        options: [
+            { text: "That I repeat their mistakes", char: "armin" },
+            { text: "That I can finish what they started", char: "eren" },
+            { text: "That I should stop this cycle", char: "historia" },
+            { text: "Nothing. They're silent.", char: "levi" }
+        ]
+    },
+    {
+        text: "The Founding Titan's will — do you submit or dominate?",
+        options: [
+            { text: "Dominate. I am the master.", char: "eren" },
+            { text: "Submit. Learn first.", char: "armin" },
+            { text: "Negotiate. Find balance.", char: "historia" },
+            { text: "Reject. I serve no will but mine.", char: "levi" }
+        ]
+    },
+    {
+        text: "You can end the Titan curse. Do you?",
+        options: [
+            { text: "Yes. Free them all.", char: "armin" },
+            { text: "No. It's protection as much as curse.", char: "erwin" },
+            { text: "Only if I can replace it with something better.", char: "hange" },
+            { text: "I don't know. The world needs Titans.", char: "eren" }
+        ]
+    },
+    {
+        text: "The power isolates you. How do you cope?",
+        options: [
+            { text: "I don't. I use the isolation.", char: "eren" },
+            { text: "I reach out more deliberately.", char: "armin" },
+            { text: "I accept it as part of the burden.", char: "erwin" },
+            { text: "I let it consume me.", char: "reiner" }
+        ]
+    },
+    {
+        text: "You are the Founding Titan now. What do you do first?",
+        options: [
+            { text: "See the truth of everything", char: "hange" },
+            { text: "Protect those I love", char: "mikasa" },
+            { text: "End the cycle of violence", char: "armin" },
+            { text: "Make them pay for everything", char: "eren" }
+        ]
+    }
+];
+// QUIZ STATE
+let currentQuestions = [];
+let currentQuestionIndex = 0;
+let scores = {};
+let selectedOption = null;
+
+// Fisher-Yates shuffle
+function shuffle(array) {
+    const arr = [...array];
+    for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+}
+
+// Initialize quiz
+function initScores() {
+    scores = {};
+    charKeys.forEach(key => scores[key] = 0);
+}
+
+function startQuiz() {
+    initScores();
+    
+    // Shuffle all questions and pick 12
+    const shuffled = shuffle(allQuestions);
+    currentQuestions = shuffled.slice(0, 12);
+    currentQuestionIndex = 0;
+    selectedOption = null;
+    
+    // Hide start, show quiz
+    document.getElementById('start-screen').classList.add('hidden');
+    document.getElementById('quiz-screen').classList.remove('hidden');
+    document.getElementById('result-screen').classList.add('hidden');
+    
+    renderQuestion();
+}
+
+function renderQuestion() {
+    const q = currentQuestions[currentQuestionIndex];
+    
+    // Update progress
+    const progress = ((currentQuestionIndex + 1) / 12) * 100;
+    document.getElementById('progress-fill').style.width = progress + '%';
+    document.getElementById('progress-text').textContent = 
+        String(currentQuestionIndex + 1).padStart(2, '0') + ' / 12';
+    document.getElementById('question-number').textContent = 
+        'Question ' + String(currentQuestionIndex + 1).padStart(2, '0');
+    
+    // Render question
+    document.getElementById('question-text').textContent = q.text;
+    
+    // Render options
+    const container = document.getElementById('options-container');
+    container.innerHTML = '';
+    
+    q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'option';
+        btn.textContent = opt.text;
+        btn.onclick = () => selectOption(idx);
+        container.appendChild(btn);
+    });
+    
+    // Reset next button
+    selectedOption = null;
+    document.getElementById('next-btn').disabled = true;
+}
+
+function selectOption(index) {
+    selectedOption = index;
+    
+    // Update UI
+    const buttons = document.querySelectorAll('.option');
+    buttons.forEach((btn, idx) => {
+        btn.classList.toggle('selected', idx === index);
+    });
+    
+    document.getElementById('next-btn').disabled = false;
+}
+
+function nextQuestion() {
+    if (selectedOption === null) return;
+    
+    // Score the answer
+    const q = currentQuestions[currentQuestionIndex];
+    const char = q.options[selectedOption].char;
+    scores[char]++;
+    
+    // Move to next or finish
+    currentQuestionIndex++;
+    
+    if (currentQuestionIndex >= 12) {
+        showResult();
+    } else {
+        renderQuestion();
+    }
+}
+
+function getWinner() {
+    let maxScore = -1;
+    let winners = [];
+    
+    for (const [char, score] of Object.entries(scores)) {
+        if (score > maxScore) {
+            maxScore = score;
+            winners = [char];
+        } else if (score === maxScore) {
+            winners.push(char);
+        }
+    }
+    
+    // Tie-breaker: random from winners
+    return winners[Math.floor(Math.random() * winners.length)];
+}
+
+function showResult() {
+    const winnerKey = getWinner();
+    const char = characters[winnerKey];
+    
+    // Hide quiz, show result
+    document.getElementById('quiz-screen').classList.add('hidden');
+    document.getElementById('result-screen').classList.remove('hidden');
+    
+    // Random photo
+    const photo = char.photos[Math.floor(Math.random() * char.photos.length)];
+    document.getElementById('result-img').src = photo;
+    
+    // Text content
+    document.getElementById('result-name').textContent = char.name;
+    document.getElementById('result-tag').textContent = char.tag;
+    
+    // Random quote
+    const quote = char.quotes[Math.floor(Math.random() * char.quotes.length)];
+    document.getElementById('result-quote').textContent = quote;
+    
+    // Traits
+    const traitsContainer = document.getElementById('result-traits');
+    traitsContainer.innerHTML = '';
+    char.traits.forEach(trait => {
+        const span = document.createElement('span');
+        span.className = 'trait';
+        span.textContent = trait;
+        traitsContainer.appendChild(span);
+    });
+    
+    // Description
+    document.getElementById('result-desc').textContent = char.desc;
+}
+
+function restartQuiz() {
+    document.getElementById('result-screen').classList.add('hidden');
+    document.getElementById('start-screen').classList.remove('hidden');
+}
+
+// Save card as PNG
+function saveCard() {
+    const winnerKey = getWinner();
+    const char = characters[winnerKey];
+    
+    // Setup save card content
+    const photo = char.photos[Math.floor(Math.random() * char.photos.length)];
+    document.getElementById('save-img').src = photo;
+    document.getElementById('save-name').textContent = char.name;
+    document.getElementById('save-tag').textContent = char.tag;
+    
+    const quote = char.quotes[Math.floor(Math.random() * char.quotes.length)];
+    document.getElementById('save-quote').textContent = quote;
+    
+    const traitsContainer = document.getElementById('save-traits');
+    traitsContainer.innerHTML = '';
+    char.traits.forEach(trait => {
+        const span = document.createElement('span');
+        span.className = 'trait';
+        span.textContent = trait;
+        traitsContainer.appendChild(span);
+    });
+    
+    // Show temporarily for capture
+    const saveCardEl = document.getElementById('save-card-content');
+    saveCardEl.classList.remove('hidden');
+    
+    // Capture with html2canvas
+    html2canvas(saveCardEl, {
+        scale: 3,
+        backgroundColor: '#0a0908',
+        useCORS: true
+    }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = 'aot-result.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+        
+        saveCardEl.classList.add('hidden');
+    });
+}
+
+// Close the script tag and HTML
+    </script>
+</body>
+</html>
